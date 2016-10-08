@@ -33,7 +33,16 @@ public class MainActivity extends AppCompatActivity {
         mTimeIntervalSpinner = (Spinner) findViewById(R.id.timeIntervalSpinner);
         mNotificationTypeRadioGroup = (RadioGroup) findViewById(R.id.notificationTypeRadioGroup);
 
+        //Send notification
+        mSendNotificationButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
+
         setUpSpinner();
+        setUpRadioGroup();
     }
 
     //Set up spinner :
@@ -88,5 +97,9 @@ public class MainActivity extends AppCompatActivity {
         builder.setStyle(style);
 
         return builder.build();
+    }
+
+    private void scheduleNotification() {
+
     }
 }
