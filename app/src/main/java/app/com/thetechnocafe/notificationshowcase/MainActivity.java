@@ -13,6 +13,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.RadioGroup;
 import android.widget.Spinner;
 
@@ -24,6 +25,7 @@ public class MainActivity extends AppCompatActivity {
     private Button mSendNotificationButton;
     private Spinner mTimeIntervalSpinner;
     private RadioGroup mNotificationTypeRadioGroup;
+    private ImageView mPreviewImage;
 
     private int mTimeInterval = 0;
     private ArrayList<String> mTimeIntervalList = new ArrayList<>(Arrays.asList(new String[]{"5", "10", "15", "20", "25", "30"}));
@@ -36,6 +38,7 @@ public class MainActivity extends AppCompatActivity {
         mSendNotificationButton = (Button) findViewById(R.id.sendNotificationButton);
         mTimeIntervalSpinner = (Spinner) findViewById(R.id.timeIntervalSpinner);
         mNotificationTypeRadioGroup = (RadioGroup) findViewById(R.id.notificationTypeRadioGroup);
+        mPreviewImage = (ImageView) findViewById(R.id.previewImageView);
 
         //Send notification
         mSendNotificationButton.setOnClickListener(new View.OnClickListener() {
@@ -43,15 +46,19 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 switch (mNotificationTypeRadioGroup.getCheckedRadioButtonId()) {
                     case R.id.simpleNotificationRadioButton: {
-                        scheduleNotification(getSimpleNotification(), mTimeInterval);
+                        scheduleNotification(getSimpleNotification(), mTimeInterval, 1);
                         break;
                     }
                     case R.id.bigPictureNotificationRadioButton: {
-                        scheduleNotification(getBigPictureNotification(), mTimeInterval);
+                        scheduleNotification(getBigPictureNotification(), mTimeInterval, 2);
                         break;
                     }
                     case R.id.bigTextNotificationRadioButton: {
-                        scheduleNotification(getBigTextNotification(), mTimeInterval);
+                        scheduleNotification(getBigTextNotification(), mTimeInterval, 3);
+                        break;
+                    }
+                    case R.id.inboxNotificationRadioButton: {
+                        scheduleNotification(getInboxNotification(), mTimeInterval, 4);
                         break;
                     }
                 }
@@ -91,21 +98,38 @@ public class MainActivity extends AppCompatActivity {
         mNotificationTypeRadioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(RadioGroup group, int checkedId) {
-
+                switch (checkedId) {
+                    case R.id.simpleNotificationRadioButton: {
+                        mPreviewImage.setImageResource(R.drawable.simple_notification);
+                        break;
+                    }
+                    case R.id.bigPictureNotificationRadioButton: {
+                        mPreviewImage.setImageResource(R.drawable.big_image_notification);
+                        break;
+                    }
+                    case R.id.bigTextNotificationRadioButton: {
+                        mPreviewImage.setImageResource(R.drawable.big_text_notification);
+                        break;
+                    }
+                    case R.id.inboxNotificationRadioButton: {
+                        mPreviewImage.setImageResource(R.drawable.inbox_notification);
+                        break;
+                    }
+                }
             }
         });
     }
 
     //Schedule the notification : Create a pending intent(from a intent that activates the broadcast receiver) and set an alarm via alarm manager
-    private void scheduleNotification(Notification notification, int interval) {
+    private void scheduleNotification(Notification notification, int interval, int notificationID) {
         Intent intent = new Intent(this, NotificationPublisher.class);
 
         //Add notification and id to the intent
         intent.putExtra(NotificationPublisher.NOTIFICATION, notification);
-        intent.putExtra(NotificationPublisher.NOTIFICATION_ID, 1);
+        intent.putExtra(NotificationPublisher.NOTIFICATION_ID, notificationID);
 
         //Set up pending intent
-        PendingIntent pendingIntent = PendingIntent.getBroadcast(this, 0, intent, 0);
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(this, 0, intent, PendingIntent.FLAG_CANCEL_CURRENT);
 
         //Get alarm manager
         AlarmManager alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
@@ -120,12 +144,14 @@ public class MainActivity extends AppCompatActivity {
      * Different Types of Notifications (These are written into different functions for instant reuse)
      * - Simple Notification
      * - Big Picture Notification
+     * - Big Text Notification
+     * - Inbox Notification
      */
 
     private Notification getSimpleNotification() {
         NotificationCompat.Builder builder = new NotificationCompat.Builder(this);
-        builder.setContentTitle("Simple Notification")
-                .setContentTitle("This is a simple notification")
+        builder.setContentTitle("Notification Showcase")
+                .setContentText("This is a simple notification")
                 .setSmallIcon(R.mipmap.ic_launcher)
                 .setVibrate(new long[]{250, 500, 250, 500})
                 .setLargeIcon(BitmapFactory.decodeResource(getResources(), R.mipmap.ic_launcher));
@@ -135,8 +161,8 @@ public class MainActivity extends AppCompatActivity {
 
     private Notification getBigPictureNotification() {
         NotificationCompat.Builder builder = new NotificationCompat.Builder(this);
-        builder.setContentTitle("Simple Notification")
-                .setContentTitle("This is a big picture notification")
+        builder.setContentTitle("Notification Showcase")
+                .setContentText("This is a big picture notification")
                 .setVibrate(new long[]{250, 500, 250, 500})
                 .setSmallIcon(R.mipmap.ic_launcher)
                 .setLargeIcon(BitmapFactory.decodeResource(getResources(), R.mipmap.ic_launcher));
@@ -152,14 +178,34 @@ public class MainActivity extends AppCompatActivity {
 
     private Notification getBigTextNotification() {
         NotificationCompat.Builder builder = new NotificationCompat.Builder(this);
-        builder.setContentTitle("Simple Notification")
-                .setContentTitle("This is a big text notification")
+        builder.setContentTitle("Notification Showcase")
+                .setContentText("This is a big text notification")
                 .setVibrate(new long[]{250, 500, 250, 500})
                 .setSmallIcon(R.mipmap.ic_launcher)
                 .setLargeIcon(BitmapFactory.decodeResource(getResources(), R.mipmap.ic_launcher));
 
         android.support.v4.app.NotificationCompat.BigTextStyle style = new android.support.v4.app.NotificationCompat.BigTextStyle();
-        style.bigText("Big text from Notification Showcase\n" + "Notification are very powerful part of your app\n" + "But make sure not to overdo them just like we have done here :P");
+        style.bigText("Big text from Notification Showcase\n" + "Notification are very powerful part of your app\n" + "But make sure not to overdo them just like we have done here :P")
+                .setSummaryText("Message from Notification Showcase");
+
+        builder.setStyle(style);
+
+        return builder.build();
+    }
+
+    private Notification getInboxNotification() {
+        NotificationCompat.Builder builder = new NotificationCompat.Builder(this);
+        builder.setContentTitle("Notification Showcase")
+                .setContentText("This is a inbox notification")
+                .setVibrate(new long[]{250, 500, 250, 500})
+                .setSmallIcon(R.mipmap.ic_launcher)
+                .setLargeIcon(BitmapFactory.decodeResource(getResources(), R.mipmap.ic_launcher));
+
+        android.support.v4.app.NotificationCompat.InboxStyle style = new android.support.v4.app.NotificationCompat.InboxStyle();
+        style.addLine("Simple Notification")
+                .addLine("Big Picture Notification")
+                .addLine("Big Text Notification")
+                .addLine("Inbox Notification");
 
         builder.setStyle(style);
 

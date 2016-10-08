@@ -7,6 +7,7 @@
     android:layout_height="match_parent"
     android:gravity="center"
     android:orientation="vertical"
+    android:layout_margin="8dp"
     tools:context="app.com.thetechnocafe.notificationshowcase.MainActivity">
 
     <ScrollView
@@ -17,22 +18,36 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="vertical"
-            android:gravity="center_horizontal">
+            android:gravity="center_horizontal"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="left"
+                android:layout_margin="8dp"
+                android:text="Preview"/>
+
+            <ImageView
+                android:id="@+id/previewImageView"
+                android:layout_width="match_parent"
+                android:layout_height="160dp"
+                android:src="@drawable/big_image_notification"
+                android:layout_margin="8dp"/>
 
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="left"
-                android:layout_margin="16dp"
-                android:text="Select Time Interval(sec):"/>
+                android:layout_margin="8dp"
+                android:text="Select Time Interval(sec)"/>
 
             <Spinner
                 android:id="@+id/timeIntervalSpinner"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="16dp">
+                android:layout_margin="8dp">
 
             </Spinner>
 
@@ -40,14 +55,14 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="left"
-                android:layout_margin="16dp"
-                android:text="Select Notification Type:"/>
+                android:layout_margin="8dp"
+                android:text="Select Notification Type"/>
 
             <RadioGroup
                 android:id="@+id/notificationTypeRadioGroup"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="16dp">
+                android:layout_margin="8dp">
 
                 <RadioButton
                     android:id="@+id/simpleNotificationRadioButton"
@@ -67,13 +82,19 @@
                     android:layout_height="wrap_content"
                     android:text="Big Text Notification"/>
 
+                <RadioButton
+                    android:id="@+id/inboxNotificationRadioButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Inbox Notification"/>
+
             </RadioGroup>
 
             <Button
                 android:id="@+id/sendNotificationButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_margin="16dp"
+                android:layout_margin="8dp"
                 android:text="Send Notification"/>
 
         </LinearLayout>
