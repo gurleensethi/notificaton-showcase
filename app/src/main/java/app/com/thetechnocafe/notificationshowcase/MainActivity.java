@@ -50,6 +50,10 @@ public class MainActivity extends AppCompatActivity {
                         scheduleNotification(getBigPictureNotification(), mTimeInterval);
                         break;
                     }
+                    case R.id.bigTextNotificationRadioButton: {
+                        scheduleNotification(getBigTextNotification(), mTimeInterval);
+                        break;
+                    }
                 }
             }
         });
@@ -113,7 +117,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     /**
-     * Different Types of Notifications
+     * Different Types of Notifications (These are written into different functions for instant reuse)
      * - Simple Notification
      * - Big Picture Notification
      */
@@ -121,7 +125,7 @@ public class MainActivity extends AppCompatActivity {
     private Notification getSimpleNotification() {
         NotificationCompat.Builder builder = new NotificationCompat.Builder(this);
         builder.setContentTitle("Simple Notification")
-                .setContentTitle("This is a simple notification from Notification Showcase")
+                .setContentTitle("This is a simple notification")
                 .setSmallIcon(R.mipmap.ic_launcher)
                 .setVibrate(new long[]{250, 500, 250, 500})
                 .setLargeIcon(BitmapFactory.decodeResource(getResources(), R.mipmap.ic_launcher));
@@ -132,7 +136,7 @@ public class MainActivity extends AppCompatActivity {
     private Notification getBigPictureNotification() {
         NotificationCompat.Builder builder = new NotificationCompat.Builder(this);
         builder.setContentTitle("Simple Notification")
-                .setContentTitle("This is a big picture notification from Notification Showcase")
+                .setContentTitle("This is a big picture notification")
                 .setVibrate(new long[]{250, 500, 250, 500})
                 .setSmallIcon(R.mipmap.ic_launcher)
                 .setLargeIcon(BitmapFactory.decodeResource(getResources(), R.mipmap.ic_launcher));
@@ -140,6 +144,22 @@ public class MainActivity extends AppCompatActivity {
         //Set big picture style
         android.support.v4.app.NotificationCompat.BigPictureStyle style = new android.support.v4.app.NotificationCompat.BigPictureStyle();
         style.bigPicture(BitmapFactory.decodeResource(getResources(), R.mipmap.ic_launcher));
+
+        builder.setStyle(style);
+
+        return builder.build();
+    }
+
+    private Notification getBigTextNotification() {
+        NotificationCompat.Builder builder = new NotificationCompat.Builder(this);
+        builder.setContentTitle("Simple Notification")
+                .setContentTitle("This is a big text notification")
+                .setVibrate(new long[]{250, 500, 250, 500})
+                .setSmallIcon(R.mipmap.ic_launcher)
+                .setLargeIcon(BitmapFactory.decodeResource(getResources(), R.mipmap.ic_launcher));
+
+        android.support.v4.app.NotificationCompat.BigTextStyle style = new android.support.v4.app.NotificationCompat.BigTextStyle();
+        style.bigText("Big text from Notification Showcase\n" + "Notification are very powerful part of your app\n" + "But make sure not to overdo them just like we have done here :P");
 
         builder.setStyle(style);
 

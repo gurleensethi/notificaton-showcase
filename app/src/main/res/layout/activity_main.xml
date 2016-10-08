@@ -61,6 +61,12 @@
                     android:layout_height="wrap_content"
                     android:text="Big Icon Notification"/>
 
+                <RadioButton
+                    android:id="@+id/bigTextNotificationRadioButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Big Text Notification"/>
+
             </RadioGroup>
 
             <Button
