@@ -26,7 +26,7 @@ public class MainActivity extends AppCompatActivity {
     private RadioGroup mNotificationTypeRadioGroup;
 
     private int mTimeInterval = 0;
-    private ArrayList<String> mTimeIntervalList = new ArrayList<>(Arrays.asList(new String[]{"0", "5", "10", "15", "20", "25", "30"}));
+    private ArrayList<String> mTimeIntervalList = new ArrayList<>(Arrays.asList(new String[]{"5", "10", "15", "20", "25", "30"}));
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -92,31 +92,7 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-    private Notification getSimpleNotification() {
-        NotificationCompat.Builder builder = new NotificationCompat.Builder(this);
-        builder.setContentTitle("Simple Notification")
-                .setContentTitle("This is a simple notification from Notification Showcase")
-                .setSmallIcon(R.mipmap.ic_launcher)
-                .setLargeIcon(BitmapFactory.decodeResource(getResources(), R.mipmap.ic_launcher));
-
-        return builder.build();
-    }
-
-    private Notification getBigPictureNotification() {
-        NotificationCompat.Builder builder = new NotificationCompat.Builder(this);
-        builder.setContentTitle("Simple Notification")
-                .setContentTitle("This is a big picture notification from Notification Showcase")
-                .setSmallIcon(R.mipmap.ic_launcher)
-                .setLargeIcon(BitmapFactory.decodeResource(getResources(), R.mipmap.ic_launcher));
-
-        NotificationCompat.BigPictureStyle style = new android.support.v4.app.NotificationCompat.BigPictureStyle();
-        style.bigPicture(BitmapFactory.decodeResource(getResources(), R.mipmap.ic_launcher));
-
-        builder.setStyle(style);
-
-        return builder.build();
-    }
-
+    //Schedule the notification : Create a pending intent(from a intent that activates the broadcast receiver) and set an alarm via alarm manager
     private void scheduleNotification(Notification notification, int interval) {
         Intent intent = new Intent(this, NotificationPublisher.class);
 
@@ -134,5 +110,39 @@ public class MainActivity extends AppCompatActivity {
 
         //Set alarm
         alarmManager.set(AlarmManager.ELAPSED_REALTIME_WAKEUP, wakeupAlarmTime, pendingIntent);
+    }
+
+    /**
+     * Different Types of Notifications
+     * - Simple Notification
+     * - Big Picture Notification
+     */
+
+    private Notification getSimpleNotification() {
+        NotificationCompat.Builder builder = new NotificationCompat.Builder(this);
+        builder.setContentTitle("Simple Notification")
+                .setContentTitle("This is a simple notification from Notification Showcase")
+                .setSmallIcon(R.mipmap.ic_launcher)
+                .setVibrate(new long[]{250, 500, 250, 500})
+                .setLargeIcon(BitmapFactory.decodeResource(getResources(), R.mipmap.ic_launcher));
+
+        return builder.build();
+    }
+
+    private Notification getBigPictureNotification() {
+        NotificationCompat.Builder builder = new NotificationCompat.Builder(this);
+        builder.setContentTitle("Simple Notification")
+                .setContentTitle("This is a big picture notification from Notification Showcase")
+                .setVibrate(new long[]{250, 500, 250, 500})
+                .setSmallIcon(R.mipmap.ic_launcher)
+                .setLargeIcon(BitmapFactory.decodeResource(getResources(), R.mipmap.ic_launcher));
+
+        //Set big picture style
+        android.support.v4.app.NotificationCompat.BigPictureStyle style = new android.support.v4.app.NotificationCompat.BigPictureStyle();
+        style.bigPicture(BitmapFactory.decodeResource(getResources(), R.mipmap.ic_launcher));
+
+        builder.setStyle(style);
+
+        return builder.build();
     }
 }
