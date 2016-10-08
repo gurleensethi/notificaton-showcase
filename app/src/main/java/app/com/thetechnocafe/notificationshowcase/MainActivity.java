@@ -1,8 +1,12 @@
 package app.com.thetechnocafe.notificationshowcase;
 
+import android.app.AlarmManager;
 import android.app.Notification;
+import android.app.PendingIntent;
+import android.content.Intent;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
+import android.os.SystemClock;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.app.NotificationCompat;
 import android.view.View;
@@ -37,7 +41,16 @@ public class MainActivity extends AppCompatActivity {
         mSendNotificationButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                switch (mNotificationTypeRadioGroup.getCheckedRadioButtonId()) {
+                    case R.id.simpleNotificationRadioButton: {
+                        scheduleNotification(getSimpleNotification(), mTimeInterval);
+                        break;
+                    }
+                    case R.id.bigPictureNotificationRadioButton: {
+                        scheduleNotification(getBigPictureNotification(), mTimeInterval);
+                        break;
+                    }
+                }
             }
         });
 
@@ -68,6 +81,9 @@ public class MainActivity extends AppCompatActivity {
 
     //Set up radio group
     private void setUpRadioGroup() {
+        //Check initial button
+        mNotificationTypeRadioGroup.check(R.id.simpleNotificationRadioButton);
+
         mNotificationTypeRadioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(RadioGroup group, int checkedId) {
@@ -99,7 +115,22 @@ public class MainActivity extends AppCompatActivity {
         return builder.build();
     }
 
-    private void scheduleNotification() {
+    private void scheduleNotification(Notification notification, int interval) {
+        Intent intent = new Intent(this, NotificationPublisher.class);
 
+        //Add notification and id to the intent
+        intent.putExtra(NotificationPublisher.NOTIFICATION, notification);
+        intent.putExtra(NotificationPublisher.NOTIFICATION_ID, 1);
+
+        //Set up pending intent
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(this, 0, intent, 0);
+
+        //Get alarm manager
+        AlarmManager alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
+
+        long wakeupAlarmTime = SystemClock.elapsedRealtime() + (interval * 1000);
+
+        //Set alarm
+        alarmManager.set(AlarmManager.ELAPSED_REALTIME_WAKEUP, wakeupAlarmTime, pendingIntent);
     }
 }

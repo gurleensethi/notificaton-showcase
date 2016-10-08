@@ -5,8 +5,8 @@ import android.content.Context;
 import android.content.Intent;
 
 public class NotificationPublisher extends BroadcastReceiver {
-    public String NOTIFICATION_ID = "natification-id";
-    public String NOTIFICATION = "notification";
+    public static final String NOTIFICATION_ID = "natification-id";
+    public static final String NOTIFICATION = "notification";
 
     public NotificationPublisher() {
     }
