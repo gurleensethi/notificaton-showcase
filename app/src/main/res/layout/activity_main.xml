@@ -32,7 +32,7 @@
                 android:id="@+id/previewImageView"
                 android:layout_width="match_parent"
                 android:layout_height="160dp"
-                android:src="@drawable/big_image_notification"
+                android:src="@drawable/simple_notification"
                 android:layout_margin="8dp"/>
 
 
