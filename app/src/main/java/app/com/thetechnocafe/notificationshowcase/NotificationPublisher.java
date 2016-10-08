@@ -22,7 +22,7 @@ public class NotificationPublisher extends BroadcastReceiver {
         Notification notification = intent.getParcelableExtra(NOTIFICATION);
 
         //Get notification id
-        int id = intent.getParcelableExtra(NOTIFICATION_ID);
+        int id = intent.getIntExtra(NOTIFICATION_ID, 0);
 
         //Send the notification
         if(notification != null) {
